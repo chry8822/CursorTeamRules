@@ -9,7 +9,7 @@
 `.cursor/` 폴더를 Git으로 공유해 팀 전체가 동일한 AI 환경에서 작업합니다.
 
 ## 구조
-
+```js
 .cursor/
 ├── rules/
 │ ├── index.mdc # 프로젝트 기본 컨벤션
@@ -17,14 +17,8 @@
 └── commands/
 ├── check.md # 컨벤션 + 타입 점검
 └── create-api.md # API 파일 생성
-
+```
 ## 사용법
-
-### 팀 적용
-
-git clone [프로젝트 레포]
-
-# Cursor로 열면 Rules 자동 적용
 
 ### /check — PR 전 점검
 
