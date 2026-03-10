@@ -18,7 +18,8 @@
 │   └── ai-behavior.mdc    # AI 행동 규칙 (항상 적용)
 └── commands/
     ├── check.md           # 컨벤션 + 타입 점검
-    ├── create-api.md      # API 파일 생성
+    ├── create-api.md      # API 서비스 전체 구조 생성
+    ├── add-api.md         # 단일 API 엔드포인트 추가
     └── commit.md          # Git 커밋 자동화
 ```
 
@@ -69,7 +70,7 @@
 
 ### /check — PR 전 컨벤션 & 타입 점검
 
-`Cmd+L → /check @파일명.tsx`
+`/check @파일명.tsx`
 
 컨벤션, 네이밍, JSDoc, 타입 오류를 순서대로 점검합니다.
 모든 문제를 번호 목록으로 먼저 출력하고, 수정 여부는 개발자가 직접 선택합니다.
@@ -101,16 +102,16 @@
 
 ---
 
-### /create-api — API 서비스 파일 생성
+### /create-api — API 서비스 전체 구조 생성
 
 `/create-api [서비스명]` 또는 `/create-api dailytalk user group` (복수 동시 생성)
 
-컨벤션에 맞는 API 서비스 파일 구조를 자동 생성합니다.
+새 서비스의 API 파일 구조 전체를 한 번에 생성합니다.
 생성 전 파일 목록을 먼저 출력하고, 생성 여부는 개발자가 결정합니다.
 
 ![/create-api 커맨드 설명](assets/create-api-tooltip.png)
 
-컨벤션에 맞게 필요한 파일 목록을 생성합니다.
+컨벤션에 맞게 필요한 파일 목록을 출력합니다.
 
 ![/create-api 결과 — 생성된 파일 목록](assets/create-api-result-files.png)
 
@@ -132,22 +133,80 @@ src/api/@query/
 
 ---
 
-### /commit — Git 커밋 자동화
+### /add-api — 단일 API 엔드포인트 추가
 
-`/commit`
+`/add-api` 또는 `/add-api [엔드포인트 정보]`
 
-변경 파일을 자동 분석해 커밋 타입 선택 → 메시지 생성 → 확인 후 커밋까지 진행합니다.
-push는 반드시 사용자 확인 후에만 실행됩니다.
+엔드포인트 정보를 입력하면 API 함수 / 타입 / Query 옵션을 기존 파일에 추가하거나 새 파일을 생성합니다.
+수정 전 생성될 코드를 미리보기로 출력하고, 확인 후에만 파일을 수정합니다.
+
+> `/create-api` 가 서비스 폴더 전체를 새로 만드는 커맨드라면,
+> `/add-api` 는 기존 또는 새 파일에 단일 엔드포인트를 추가하는 커맨드입니다.
+
+**호출 방식**
+
+```
+# 방식 1 — 정보 없이 호출 → 입력 안내 출력 후 대기
+/add-api
+
+# 방식 2 — 정보와 함께 호출 → 바로 진행
+/add-api
+GET
+/carenation/community/alarm/unread-count
+안읽은 알림 개수 조회
+{ unread_count: number }
+src/api/main/main.ts
+```
+
+**입력 형식**
+
+| 항목 | 설명 |
+|------|------|
+| 메서드 | `GET` / `POST` / `PUT` / `DELETE` |
+| 엔드포인트 | API 경로 |
+| 설명 | 함수 설명 한 줄 |
+| 요청 파라미터 | `{ 필드: 타입 }` — 없으면 생략 |
+| 응답 타입 | `{ 필드: 타입 }` — `data` 내부 구조만 입력 |
+| 파일 | 추가할 파일 경로 — 없으면 생략 (위치 선택 안내) |
 
 **진행 순서**
+
+1. 입력 분석 → 함수명 / 타입명 자동 도출
+2. 파일 경로 미입력 시 → 기존 파일 추가 또는 새 파일 생성 선택
+3. 생성될 코드 미리보기 출력 → 확인 후 파일 수정
+4. API 함수 → Request 타입 → Response 타입 → Query 옵션 순서로 파일 수정
+5. 수정 완료 파일 목록 출력
+
+**무한 스크롤이 필요한 경우** `infinite: true` 를 추가하면 `infiniteQueryOptions` 로 생성됩니다.
+
+---
+
+### /commit — Git 커밋 자동화
+
+**기본 사용 (타입 선택 → 메시지 자동 생성)**
+
+```
+/commit
+```
+
+**제목 직접 입력 (즉시 커밋)**
+
+```
+/commit fix: 로그인 토큰 갱신 오류 수정
+/commit [ABEH-2966] - 동행 공고 프로필 이미지 미노출 수정
+```
+
+제목을 직접 입력하면 타입 선택·메시지 생성 단계를 건너뛰고 바로 커밋을 실행합니다.
+
+**진행 순서 (기본 사용)**
 
 1. `git status` + `git diff HEAD` 로 변경 사항 파악
 2. 커밋 타입 선택 안내 출력 (`feat` / `fix` / `refactor` / `style` / `chore` / `docs` / `test`)
 3. diff 기반으로 커밋 메시지 초안 생성 → 사용자 확인
-4. 확인 시 `git add . && git commit` 실행
+4. 확인 시 커밋 실행 (PowerShell 환경 대응)
 5. 커밋 완료 후 push 여부 별도 확인
 
-> 응답 속도를 높이려면 커밋 전 Cursor 모델을 빠른 모델로 전환하세요. (claude-3.5-haiku, gpt-4o-mini 등)
+> 응답 속도를 높이려면 빠른 모델로 전환 후 사용하세요. (claude-3.5-haiku, gpt-4o-mini 등)
 
 ---
 

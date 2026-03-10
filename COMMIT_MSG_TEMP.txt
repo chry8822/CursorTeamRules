@@ -1,0 +1,5 @@
+feat: add-api 커맨드 추가 및 commit 커맨드 개선
+
+- add-api.md: 단일 API 엔드포인트 추가 커맨드 신규 작성 (함수/타입/Query 자동 생성, 미리보기 후 수정)
+- commit.md: STEP 0(제목 직접 입력) 추가, PowerShell 임시 파일 커밋 방식 적용
+- README.md: /add-api 섹션 추가, /commit 사용법 업데이트
