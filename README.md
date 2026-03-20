@@ -210,12 +210,59 @@ src/api/main/main.ts
 
 ---
 
-## 팀 적용
+## 설치
+
+### 자동 설치 (권장)
 
 ```bash
-git clone [프로젝트 레포]
-# Cursor로 열면 .cursor/rules/ 가 자동 적용됩니다
+npx cursor-setup
 ```
+
+대화형 메뉴에서 적용할 파일을 선택하면 `.cursor/` 폴더에 자동으로 설치됩니다.
+
+```
+──────────────────────────────
+🎯  Cursor 설정 셋업
+──────────────────────────────
+── Rules ──────────────────
+❯ ◯ index.mdc            — 프로젝트 기본 컨벤션
+  ◯ typescript.mdc       — TypeScript 규칙
+  ◯ ai-behavior.mdc      — AI 행동 규칙
+── Commands ────────────────
+  ◯ check.md             — 컨벤션 + 타입 점검
+  ◯ commit.md            — Git 커밋 자동화
+  ◯ create-api.md        — API 서비스 전체 구조 생성
+  ◯ add-api.md           — 단일 API 엔드포인트 추가
+```
+
+업데이트된 파일을 다시 받으려면 동일하게 `npx cursor-setup` 을 재실행하면 됩니다.
+
+---
+
+### 수동 설치
+
+이 레포를 clone해서 `.cursor/` 폴더를 프로젝트에 직접 복사합니다.
+
+```bash
+git clone https://github.com/chry8822/CursorTeamRules.git
+cp -r CursorTeamRules/.cursor [내 프로젝트 경로]/
+```
+
+원하는 파일만 선택해서 복사하거나, 내용을 직접 수정해서 사용할 수 있습니다.
+
+---
+
+### Rules vs Commands 동작 차이
+
+| | Rules (`.mdc`) | Commands (`.md`) |
+|--|--|--|
+| 위치 | `.cursor/rules/` | `.cursor/commands/` |
+| 적용 방식 | 매 대화에 **자동 주입** | `/커맨드명` 으로 **직접 호출** |
+| AI 준수율 | 배경 컨텍스트로 작동 (드리프트 가능) | 파일을 직접 읽고 절차대로 실행 (강제성 높음) |
+| 사용 목적 | 코딩 컨벤션, 네이밍, 타입 규칙 등 | 반복 작업 자동화 (점검, 생성, 커밋 등) |
+
+> 💡 **팁** — AI가 규칙을 자주 무시한다면 커맨드로 만드세요.
+> 커맨드는 AI가 파일을 직접 읽고 절차대로 실행하기 때문에 Rules보다 훨씬 강하게 동작합니다.
 
 ---
 
