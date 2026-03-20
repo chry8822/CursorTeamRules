@@ -13,14 +13,19 @@
 ```
 .cursor/
 ├── rules/
-│   ├── index.mdc          # 프로젝트 기본 컨벤션 (항상 적용)
-│   ├── typescript.mdc     # TypeScript 규칙 (ts/tsx 파일 자동 적용)
-│   └── ai-behavior.mdc    # AI 행동 규칙 (항상 적용)
-└── commands/
-    ├── check.md           # 컨벤션 + 타입 점검
-    ├── create-api.md      # API 서비스 전체 구조 생성
-    ├── add-api.md         # 단일 API 엔드포인트 추가
-    └── commit.md          # Git 커밋 자동화
+│   ├── index.mdc                          # 프로젝트 기본 컨벤션 (항상 적용)
+│   ├── typescript.mdc                     # TypeScript 규칙 (ts/tsx 파일 자동 적용)
+│   └── ai-behavior.mdc                    # AI 행동 규칙 (항상 적용)
+├── commands/
+│   ├── check.md                           # 컨벤션 + 타입 점검
+│   ├── create-api.md                      # API 서비스 전체 구조 생성
+│   ├── add-api.md                         # 단일 API 엔드포인트 추가
+│   └── commit.md                          # Git 커밋 자동화
+└── skills/
+    ├── ai-analysis-behavior/SKILL.md      # 코드 분석 · 디버깅 시 AI 행동 규칙
+    ├── ai-modification-behavior/SKILL.md  # 파일 수정 · 구현 시 AI 행동 규칙
+    ├── ai-general-behavior/SKILL.md       # 모든 대화에 적용되는 기본 AI 규칙
+    └── ai-accuracy-behavior/SKILL.md      # UI/경로 추측 단정 방지 규칙
 ```
 
 ---
@@ -218,21 +223,71 @@ src/api/main/main.ts
 npx cursor-setup
 ```
 
-대화형 메뉴에서 적용할 파일을 선택하면 `.cursor/` 폴더에 자동으로 설치됩니다.
+**① 실행하면 대화형 메뉴가 열립니다**
 
 ```
 ──────────────────────────────
 🎯  Cursor 설정 셋업
 ──────────────────────────────
-── Rules ──────────────────
-❯ ◯ index.mdc            — 프로젝트 기본 컨벤션
-  ◯ typescript.mdc       — TypeScript 규칙
-  ◯ ai-behavior.mdc      — AI 행동 규칙
-── Commands ────────────────
-  ◯ check.md             — 컨벤션 + 타입 점검
-  ◯ commit.md            — Git 커밋 자동화
-  ◯ create-api.md        — API 서비스 전체 구조 생성
-  ◯ add-api.md           — 단일 API 엔드포인트 추가
+? 적용할 파일을 선택하세요 (스페이스바 선택, 엔터 확인)
+
+  ── Rules ──────────────────
+❯ ◯ index.mdc                — 프로젝트 기본 컨벤션
+  ◯ typescript.mdc            — TypeScript 규칙
+  ◯ ai-behavior.mdc           — AI 행동 규칙
+
+  ── Commands ────────────────
+  ◯ check.md                  — 컨벤션 + 타입 점검
+  ◯ commit.md                 — Git 커밋 자동화
+  ◯ create-api.md             — API 서비스 전체 구조 생성
+  ◯ add-api.md                — 단일 API 엔드포인트 추가
+
+  ── Skills ──────────────────
+  ◯ ai-analysis-behavior      — 코드 분석 · 디버깅 시 AI 행동 규칙
+  ◯ ai-modification-behavior  — 파일 수정 · 구현 시 AI 행동 규칙
+  ◯ ai-general-behavior       — 모든 대화에 적용되는 AI 기본 규칙
+  ◯ ai-accuracy-behavior      — UI/경로 추측 단정 방지 규칙
+
+  - Space: 선택/해제, Enter: 확인
+```
+
+**② 스페이스바로 필요한 파일을 선택 후 엔터**
+
+```
+  ── Rules ──────────────────
+❯ ◉ index.mdc                — 프로젝트 기본 컨벤션
+  ◉ typescript.mdc            — TypeScript 규칙
+  ◉ ai-behavior.mdc           — AI 행동 규칙
+
+  ── Commands ────────────────
+  ◉ check.md                  — 컨벤션 + 타입 점검
+  ◉ commit.md                 — Git 커밋 자동화
+  ◯ create-api.md             — API 서비스 전체 구조 생성
+  ◯ add-api.md                — 단일 API 엔드포인트 추가
+
+  ── Skills ──────────────────
+  ◉ ai-analysis-behavior      — 코드 분석 · 디버깅 시 AI 행동 규칙
+  ◉ ai-modification-behavior  — 파일 수정 · 구현 시 AI 행동 규칙
+  ◉ ai-general-behavior       — 모든 대화에 적용되는 AI 기본 규칙
+  ◉ ai-accuracy-behavior      — UI/경로 추측 단정 방지 규칙
+```
+
+**③ 선택한 파일이 프로젝트에 자동으로 설치됩니다**
+
+```
+✅ index.mdc                          → .cursor/rules/
+✅ typescript.mdc                      → .cursor/rules/
+✅ ai-behavior.mdc                     → .cursor/rules/
+✅ check.md                            → .cursor/commands/
+✅ commit.md                           → .cursor/commands/
+✅ ai-analysis-behavior/SKILL.md       → .cursor/skills/ai-analysis-behavior/
+✅ ai-modification-behavior/SKILL.md   → .cursor/skills/ai-modification-behavior/
+✅ ai-general-behavior/SKILL.md        → .cursor/skills/ai-general-behavior/
+✅ ai-accuracy-behavior/SKILL.md       → .cursor/skills/ai-accuracy-behavior/
+
+──────────────────────────────
+완료!
+──────────────────────────────
 ```
 
 업데이트된 파일을 다시 받으려면 동일하게 `npx cursor-setup` 을 재실행하면 됩니다.
