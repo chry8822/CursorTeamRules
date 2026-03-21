@@ -20,7 +20,8 @@
 │   ├── check.md                           # 컨벤션 + 타입 점검
 │   ├── create-api.md                      # API 서비스 전체 구조 생성
 │   ├── add-api.md                         # 단일 API 엔드포인트 추가
-│   └── commit.md                          # Git 커밋 자동화
+│   ├── commit.md                          # Git 커밋 자동화
+│   └── docs.md                            # 커밋 전 문서 자동 업데이트
 └── skills/
     ├── ai-analysis-behavior/SKILL.md      # 코드 분석 · 디버깅 시 AI 행동 규칙
     ├── ai-modification-behavior/SKILL.md  # 파일 수정 · 구현 시 AI 행동 규칙
@@ -186,6 +187,27 @@ src/api/main/main.ts
 
 ---
 
+### /docs — 커밋 전 문서 자동 업데이트
+
+```
+/docs
+```
+
+커밋 전 현재 변경사항을 분석해 업데이트가 필요한 문서만 선별하여 자동으로 수정합니다.
+
+**판단 기준**
+
+| 변경 종류 | 업데이트 대상 |
+|---|---|
+| 신규 기능, 버그 수정, UI/UX 개선 | 프로젝트 내 작업 추적 문서 |
+| 라이브러리 설치, 환경 변수 추가, 프로젝트 구조 변경 | `README.md` |
+| 단순 텍스트/스타일 수정, 오타 수정, 주석 변경 | 업데이트 불필요 |
+
+존재하지 않는 문서는 새로 생성하지 않으며, 변경사항과 무관한 문서는 수정하지 않습니다.
+문서 업데이트 완료 후 `/commit` 으로 커밋을 진행하세요.
+
+---
+
 ### /commit — Git 커밋 자동화
 
 **기본 사용 (타입 선택 → 메시지 자동 생성)**
@@ -239,6 +261,7 @@ npx cursor-setup
   ── Commands ────────────────
   ◯ check.md                  — 컨벤션 + 타입 점검
   ◯ commit.md                 — Git 커밋 자동화
+  ◯ docs.md                   — 커밋 전 문서 자동 업데이트
   ◯ create-api.md             — API 서비스 전체 구조 생성
   ◯ add-api.md                — 단일 API 엔드포인트 추가
 
@@ -262,6 +285,7 @@ npx cursor-setup
   ── Commands ────────────────
   ◉ check.md                  — 컨벤션 + 타입 점검
   ◉ commit.md                 — Git 커밋 자동화
+  ◯ docs.md                   — 커밋 전 문서 자동 업데이트
   ◯ create-api.md             — API 서비스 전체 구조 생성
   ◯ add-api.md                — 단일 API 엔드포인트 추가
 
