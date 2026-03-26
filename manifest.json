@@ -1,0 +1,14 @@
+[
+  { "name": "index.mdc",        "category": "rules",    "description": "프로젝트 기본 컨벤션" },
+  { "name": "typescript.mdc",   "category": "rules",    "description": "TypeScript 규칙" },
+  { "name": "ai-behavior.mdc",  "category": "rules",    "description": "AI 행동 규칙" },
+  { "name": "ai-tutor.mdc",     "category": "rules",    "description": "AI 튜터 모드" },
+  { "name": "check.md",         "category": "commands", "description": "컨벤션 + 타입 점검" },
+  { "name": "commit.md",        "category": "commands", "description": "Git 커밋 자동화" },
+  { "name": "docs.md",          "category": "commands", "description": "커밋 전 문서 자동 업데이트" },
+  { "name": "create-api.md",    "category": "commands", "description": "API 서비스 전체 구조 생성" },
+  { "name": "add-api.md",       "category": "commands", "description": "단일 API 엔드포인트 추가" },
+  { "name": "ai-analysis-behavior",    "category": "skills", "description": "코드 분석 · 디버깅 시 AI 행동 규칙" },
+  { "name": "ai-modification-behavior","category": "skills", "description": "파일 수정 · 구현 시 AI 행동 규칙" },
+  { "name": "ai-accuracy-behavior",    "category": "skills", "description": "UI/경로/기능 설명 시 추측 단정 방지 규칙" }
+]
