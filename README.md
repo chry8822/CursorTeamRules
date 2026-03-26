@@ -15,7 +15,8 @@
 ├── rules/
 │   ├── index.mdc                          # 프로젝트 기본 컨벤션 (항상 적용)
 │   ├── typescript.mdc                     # TypeScript 규칙 (ts/tsx 파일 자동 적용)
-│   └── ai-behavior.mdc                    # AI 행동 규칙 (항상 적용)
+│   ├── ai-behavior.mdc                    # AI 행동 규칙 (항상 적용)
+│   └── ai-tutor.mdc                       # AI 튜터 모드 (수동 호출)
 ├── commands/
 │   ├── check.md                           # 컨벤션 + 타입 점검
 │   ├── create-api.md                      # API 서비스 전체 구조 생성
@@ -51,6 +52,34 @@
 - Redux `useSelector`에 `RootState`, `useDispatch`에 `AppDispatch` 타입 필수
 - `as` 타입 단언 최소화 → 타입 가드 함수로 대체
 - 불가피한 `as` 사용 시 반드시 이유 주석 명시
+
+### ai-tutor.mdc — AI 튜터 모드
+
+`@ai-tutor` 로 호출하는 학습용 튜터 룰입니다. `alwaysApply: false` 로 설정되어 있어 필요할 때만 직접 멘션해서 사용합니다.
+
+**사용 방법**
+
+```
+@ai-tutor 이 파일 어떻게 동작해?
+@ai-tutor useQuery가 여기서 왜 쓰인 거야?
+@ai-tutor 이 코드 토큰 낭비하는 부분 있어?
+```
+
+채팅창에 `@ai-tutor` 를 입력하면 룰 파일이 컨텍스트에 포함되어, AI가 코드를 고쳐주는 대신 **먼저 설명하고 이해를 돕는 방식**으로 응답합니다.
+
+**튜터 모드에서 달라지는 것**
+
+| 일반 모드 | 튜터 모드 (`@ai-tutor`) |
+|---|---|
+| 코드 바로 수정 | 개념 설명 먼저, 수정은 나중 |
+| 답만 출력 | `[WHAT] [WHY] [AI CONTEXT] [OPTIMIZE]` 형식으로 분석 |
+| 짧게 답변 | 한 줄 요약 → 역할 → 동작 → AI 활용 팁 순서로 설명 |
+| 토큰 낭비 무시 | `[TOKEN WARNING]` / `[CONTEXT DESIGN]` 이슈 자동 감지 |
+
+> **적용 대상** — `.js`, `.ts`, `.gs` 파일 작업 시 자동 활성화 후보로 등록됩니다.
+> 단, `alwaysApply: false` 이므로 반드시 `@ai-tutor` 로 직접 호출해야 적용됩니다.
+
+---
 
 ### ai-behavior.mdc — AI 행동 규칙
 
@@ -257,6 +286,7 @@ npx cursor-setup
 ❯ ◯ index.mdc                — 프로젝트 기본 컨벤션
   ◯ typescript.mdc            — TypeScript 규칙
   ◯ ai-behavior.mdc           — AI 행동 규칙
+  ◯ ai-tutor.mdc              — AI 튜터 모드
 
   ── Commands ────────────────
   ◯ check.md                  — 컨벤션 + 타입 점검
@@ -281,6 +311,7 @@ npx cursor-setup
 ❯ ◉ index.mdc                — 프로젝트 기본 컨벤션
   ◉ typescript.mdc            — TypeScript 규칙
   ◉ ai-behavior.mdc           — AI 행동 규칙
+  ◯ ai-tutor.mdc              — AI 튜터 모드
 
   ── Commands ────────────────
   ◉ check.md                  — 컨벤션 + 타입 점검
@@ -302,6 +333,7 @@ npx cursor-setup
 ✅ index.mdc                          → .cursor/rules/
 ✅ typescript.mdc                      → .cursor/rules/
 ✅ ai-behavior.mdc                     → .cursor/rules/
+✅ ai-tutor.mdc                        → .cursor/rules/
 ✅ check.md                            → .cursor/commands/
 ✅ commit.md                           → .cursor/commands/
 ✅ ai-analysis-behavior/SKILL.md       → .cursor/skills/ai-analysis-behavior/
